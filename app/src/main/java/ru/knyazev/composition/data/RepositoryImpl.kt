@@ -9,6 +9,7 @@ import kotlin.random.Random
 object RepositoryImpl : Repository {
     private const val MIN_SUM_VALUE = 2
     private const val MIN_ANSWER_VALUE = 1
+    private const val MAX_VALUE_IF_LESS_TEN = 10
 
     override fun generateQuestion(maxSumValue: Int, countOfOptions: Int): Question {
         val sum = Random.nextInt(MIN_SUM_VALUE, maxSumValue + 1)
@@ -17,7 +18,7 @@ object RepositoryImpl : Repository {
         val rightAnswer = sum - visibleNumber
         options.add(rightAnswer)
         while (options.size < countOfOptions) {
-            options.add(Random.nextInt(MIN_ANSWER_VALUE, sum))
+            options.add(Random.nextInt(MIN_ANSWER_VALUE, if (sum < 10) MAX_VALUE_IF_LESS_TEN else sum))
         }
         options.random()
         return Question(sum, visibleNumber, options.toList())
